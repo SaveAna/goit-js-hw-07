@@ -27,14 +27,18 @@ function onImageClick(event) {
 
   const imgDataSource = event.target.getAttribute('data-source');
 
-  const instance = basicLightbox.create(`<img src = "${imgDataSource}">`);
+  const instance = basicLightbox.create(`<img src = "${imgDataSource}">`, {
+    onClose: instance => {
+      document.removeEventListener('keydown', onDocumentKeyDown);
+    },
+  });
   instance.show(() => document.addEventListener('keydown', onDocumentKeyDown));
 
   function onDocumentKeyDown(event) {
     if (event.code !== 'Escape') {
       return;
     }
-    instance.close(() => document.removeEventListener('keydown', onDocumentKeyDown));
+    instance.close();
   }
 }
 
